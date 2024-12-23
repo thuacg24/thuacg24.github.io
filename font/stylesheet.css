@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'Perpetua';
+    src: local('Perpetua Bold Italic'), local('Perpetua-BoldItalic'),
+        url('Perpetua-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Perpetua';
+    src: local('Perpetua Bold'), local('Perpetua-Bold'),
+        url('Perpetua-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Perpetua';
+    src: local('Perpetua Italic'), local('Perpetua-Italic'),
+        url('Perpetua-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Perpetua';
+    src: local('Perpetua'),
+        url('Perpetua.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Perpetua';
+    src: local('Perpetua Bold'), local('Perpetua-Bold'),
+        url('Perpetua-Bold_1.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+

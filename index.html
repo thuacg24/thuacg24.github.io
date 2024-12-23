@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Project</title>
+        <link rel="stylesheet" href="font/stylesheet.css"/>
+        <link rel="stylesheet" href="bootstrap-5.3.3/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="style/pyramid-loader.css"/>
+        <style>
+            div {
+                font-family: 'Perpetua';
+                user-select: none;
+            }
+            canvas {
+                margin: 0 auto;
+                z-index: -100;
+                padding: 0;
+                top: 0;
+                left: 0;
+                position: fixed;
+            }
+            #loading {
+                position: fixed;
+                display: grid;
+                place-items: center;
+                width: 100%;
+                top: 50%;
+            }
+            .canvas-lefttop {
+                position: fixed;
+                left: 5%;
+                top: 5%;
+                z-index: 5;
+                width: 100%;
+            }
+            .temp-status {
+                position: fixed;
+                margin: auto;
+                display: flex;
+                transform: translate(-50%, -50%);
+                justify-content: center;
+                left: 50%;
+                top: 80%;
+                width: 120%;
+            }
+            .progress {
+                width: 20%;
+                height: 20px;
+                margin: 5px;
+                user-select: none;
+            }
+            .pyramid_wrapper {
+                position: fixed;
+                left: 50%;
+                top: 30%;
+                transform: translate(-50%, -50%);
+            }
+            .interface {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                z-index: 20;
+                background-color: rgba(0, 0, 0, 0.6);
+                font-size: 9em;
+                text-align: center;
+                color: white;
+            }
+            .pause {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                z-index: 20;
+                background-color: rgba(0, 0, 0, 0.6);
+                font-size: 9em;
+                text-align: center;
+                color: white;
+            }
+            .hint {
+                position: fixed;
+                top: 20%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 15;
+                background-color: rgba(0, 0, 0, 0);
+                font-size: 1.5em;
+                text-align: center;
+                color: white;
+            }
+            .altar-status {
+                position: fixed;
+                right: 5%;
+                top: 30%;
+                font-size: 1em;
+                color: white;
+            }
+            .top-status {
+                position: fixed;
+                top: 5%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 15;
+                background-color: rgba(0, 0, 0, 0);
+                font-size: 1.1em;
+                text-align: center;
+                color: white;
+            }
+            body {
+                margin: 0;
+                position: fixed;
+                background-color: black;
+            }
+        </style>
+        <script src="ammo.wasm.js"></script>
+      <script type="module" crossorigin src="/assets/index-DycIpE8D.js"></script>
+    </head>
+    <body>
+        <div class="pyramid_wrapper">
+            <div class="pyramid-loader" id="pyramid-loader">
+                <div class="wrapper">
+                <span class="side side1"></span>
+                <span class="side side2"></span>
+                <span class="side side3"></span>
+                <span class="side side4"></span>
+                <span class="shadow"></span>
+                </div>  
+            </div>
+        </div>
+        <div id="loading">
+        </div>
+        <div class="canvas-lefttop" id="canvas-lefttop" style="display: none;">
+            <div class="progress" id="health-ui">
+                <div class="progress-bar bg-danger progress-bar-striped"
+                    role="progressbar" style="width: 25%;">
+                    HP
+                </div>
+            </div>
+            <div class="progress" id="stamina-ui">
+                <div class="progress-bar bg-warning progress-bar-striped"
+                    role="progressbar" style="width: 25%;">
+                    Stamina
+                </div>
+            </div>
+            <div class="progress" id="MP-ui">
+                <div class="progress-bar bg-primary progress-bar-striped"
+                    role="progressbar" style="width: 25%;">
+                    MP
+                </div>
+            </div>
+        </div>
+        <div class="temp-status" id="temp-status">
+            <div class="progress bg-dark" id="invincible-ui" style="height: 10px; display: none">
+                <div class="progress-bar bg-light progress-bar-striped" role="progressbar">
+                </div>
+            </div>
+        </div>
+        <div class="altar-status" id="altar-status" style="display: none;"></div>
+        <div class="top-status" id="top-status" style="display: none;"></div>
+        <div class="hint" id="hint"></div>
+        <div style="text-align: center;">
+            <canvas id="canvas" style="display: block;"> Canvas not supported. </canvas>
+        </div>
+        <canvas id="smallmap" style="display: block; z-index: -1;
+        position: fixed;right: 0%;left:auto;"> Canvas not supported. </canvas>
+        <div class="interface" id="endgame" style="display: none;">
+            Game End
+        </div>
+        <div class="pause" id="pause" style="display: none;">
+            Paused
+            <a style="display: block; font-size: 0.3em;" id="giveup">Give Up</a>
+        </div>
+        <div class="interface" id="startgame" style="display: none;background-size: contain;background-position: center center;background-color: black;
+                background-image: url('image/background.png');background-repeat: no-repeat;">
+            <a style="margin-top: 300px;display: block; font-size: 0.5em;" id="startbtn">Play</a>
+            <a style="display: block; font-size: 0.3em;" id="difficulty">Difficulty: Casual</a>
+            <a style="display: block; font-size: 0.3em;" id="tutorial">Tutorial: Enabled</a>
+            <a style="display: block; font-size: 0.3em;" id="manual">User Manual</a>
+        </div>
+        <div class="interface" id="usermanual" style="display: none;z-index: 100;background-color: black;
+                background-image: url('image/background.png');background-repeat: no-repeat;background-size: contain;background-position: center center;">
+            <div style="margin-top: 200px;display: block; font-size: 0.3em;">
+                Four types of items:
+                <div>First Aid Kit: regains 1/5 health</div>
+                <div>Teleporter: teleports nearest doll to random position.</div>
+                <div>Nightvision Potion: gains night vision for 30 sec.</div>
+                <div>Stamina Potion: infinite stamina for 10 sec.</div>
+            </div>
+            <a style="display: block; font-size: 0.5em;" id="backbtn" onclick="document.getElementById('usermanual').style.display='none'">Back</a>
+        </div>
+        <script src="bootstrap-5.3.3/js/bootstrap.min.js"></script>
+    </body>
+</html>
